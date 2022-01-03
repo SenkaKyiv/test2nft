@@ -1,0 +1,70 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.2;
+
+import "https://github.com/ProjectOpenSea/opensea-creatures/blob/master/contracts/ERC721Tradable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "/Users/kapral/Desktop/worktest2/nftparent.sol";
+
+
+contract NFTparents is ERC721,ERC721URIStorage, Ownable {
+ 
+ mapping(uint256 => address) public OwnerId;
+   mapping(uint256 => people) public peopleInfo;
+
+
+   struct people {
+      uint256 id;
+      string sex;
+      string name;
+      string lName;
+      uint256 fatherid;
+      uint256 motherid;
+      uint256 age;
+      uint8 level;
+      string uri;
+   }
+
+   people[] peoples;
+  
+  address private familyNftAddress;
+
+
+    constructor()   
+    ERC721("NFTGen", "NFTG") {}
+    
+
+    function mint(address account, uint256  id, string memory lName, string memory uri, string  memory name,  uint8  level, string memory sex, uint256 age, uint256 fatherid, uint256 motherid ) public {
+        //require(sex == 'male' || sex == 'female', "PeopleNFT: sex must be male or female");
+ 
+ 
+        _mint(account, id);
+        _setTokenURI(id, uri);
+
+        
+        //_setTokenURI(id, uri);
+        peopleInfo[id] = people(id, sex, name, lName, fatherid, motherid, age, level, uri);
+
+        
+    }
+    function _burn(uint256 id) internal override(ERC721, ERC721URIStorage) {
+        super._burn(id);
+    }
+
+    function tokenURI(uint256 id)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(id);
+    }
+
+
+
+    }
+ 
+//require(sex == 'male', "PeopleNFT: gender must be male ");
+
